@@ -14,7 +14,7 @@ Any remaining modifications to be made are highlighted as **`# NOTE:` comments**
 1. Place the downloaded `skin_u2netp.onnx` file into the `src/u2net/` folder of this repo (do not rename it)
 2. Install the `onnxruntime-gpu` Python package using `pip install onnxruntime-gpu` for U2-Net's GPU support
 3. Rename folders containing datasets to `VIPL-HR-V1`, `UBFC-rPPG`, `PURE` and `MPSC-rPPG` (if needed) and ensure these are all in the same parent folder
-4. Change `"/scratch/zce*/"` and `"/home/zce*/"` in `src/config.py` and `src/st_maps.py` to datasets' parent folder and repo folder, respectively
+4. Replace `"/scratch/zce*/"` and `"/home/zce*/"` in `src/config.py` and `src/st_maps.py` with your own paths to the dataset's parent folder and repo folder, respectively
 5. Define appropriate paths for UBFC-rPPG, PURE and MPSC-rPPG datasets in `src/st_maps.py` and `src/main.py`
 6. Conduct studies detailed below (find an unused or relatively free GPU to reduce comuptation times)
 
