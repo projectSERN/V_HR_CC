@@ -46,7 +46,7 @@ All of this enables us to conduct a qualitative analysis of model performance wi
 ## Expected file directories
 A dataset folder, e.g., VIPL-HR-V1, after generating ST maps:
 ```
-VIPL-HR-V1/
+/scratch/zce*/VIPL-HR-V1/
 |-- p1/
 |   |-- v1/
 |   |   |-- source1/
@@ -76,7 +76,7 @@ VIPL-HR-V1/
 
 `RhythmNet--CC_final` repo after all cross-corpus studies:
 ```
-RhythmNet--CC_final/
+/home/zce*/RhythmNet--CC_final/
 |-- results_<xxx>/
 |   |-- best_model.pth
 |   |-- config_args.txt
@@ -98,6 +98,7 @@ RhythmNet--CC_final/
 |
 |-- src/
 |   |-- rtgene/
+|   |   |-- ...
 |   |-- u2net/
 |   |   |-- inference.py
 |   |   |-- skin_u2netp.onnx
