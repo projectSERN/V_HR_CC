@@ -64,7 +64,7 @@ def get_frames(video_path):
         ret, frame = cap.read()
         
         if (not ret) and (frame_idx < num_frames):                                      # if frame could not be read
-            print(f"{video_path.split('VIPL-HR-V1/')[-1]}: frame {frame_idx} replaced with black frame as it could not be read")
+            print(f"{video_path}: frame {frame_idx} replaced with black frame as it could not be read")
             frames[frame_idx, :, :, :] = np.full_like(frames[frame_idx, :, :, :], 0)
             frame_idx += 1
 
@@ -215,7 +215,7 @@ def process_video(video_path, gt_path):
         video_path (str): Path to the video sample to process.
         gt_path (str): Path to the ground truth data for the video.
     """
-    print(f"\nProcessing {video_path.split('VIPL-HR-V1/')[-1]}")
+    print(f"\nProcessing {video_path}")
 
     # initialise RT-GENE model for face detection and landmark estimation, and U2-Net model for skin segmentation
     src_path = os.path.dirname(os.path.realpath(__file__))
@@ -241,7 +241,7 @@ def process_video(video_path, gt_path):
 
     # get frames from video
     frames = get_frames(video_path)
-    print(f"{video_path.split('VIPL-HR-V1/')[-1]}: read all {frames.shape[0]} frames")
+    print(f"{video_path}: read all {frames.shape[0]} frames")
 
     # get ground truth HR per frame values
     gt_hr = pd.read_csv(gt_path)['HR'].values
@@ -250,10 +250,10 @@ def process_video(video_path, gt_path):
     # truncate frames and ground truth HR per frame values to same length
     if len(frames) > len(gt_hr):                                                            # videos often have fewer ground truth HR values than video duration
         frames = frames[:len(gt_hr)]
-        print(f"{video_path.split('VIPL-HR-V1/')[-1]}: truncated frames to {frames.shape[0]} frames")
+        print(f"{video_path}: truncated frames to {frames.shape[0]} frames")
     elif len(frames) < len(gt_hr):
         gt_hr = gt_hr[:frames.shape[0]]
-        print(f"{video_path.split('VIPL-HR-V1/')[-1]}: truncated ground truth data to {len(gt_hr)} ground truth HR values")
+        print(f"{video_path}: truncated ground truth data to {len(gt_hr)} ground truth HR values")
 
     # process each frame to get processed face area
     processed_frames = []
@@ -271,14 +271,14 @@ def process_video(video_path, gt_path):
     # select a single segment of >=5s of continuous frames with detected face from the video (if available)
     selected_frame_indices = select_frames(face_det_flags)
     if selected_frame_indices is None:
-        print(f"{video_path.split('VIPL-HR-V1/')[-1]}: no >=5s of continuous frames with detected face found, skipped")
+        print(f"{video_path}: no >=5s of continuous frames with detected face found, skipped")
         os.rmdir(gt_save_path)                                                              # delete gt_HRs directory
         os.rmdir(save_path)                                                                 # delete source1 directory
         # NOTE: change the following line for other datasets, depending on their file structure
         if config.DATASET == 'VIPL-HR-V1':                                                  # delete v* directory
             os.rmdir(os.path.dirname(save_path))
         return                                                                              # skip this video
-    print(f"{video_path.split('VIPL-HR-V1/')[-1]}: selected frames {selected_frame_indices[0]} to {selected_frame_indices[-1]} to split into clips")
+    print(f"{video_path}: selected frames {selected_frame_indices[0]} to {selected_frame_indices[-1]} to split into clips")
 
     # initialise array to store ST maps for each clip
     num_clips = (len(selected_frame_indices) - config.CLIP_SIZE) // config.STRIDE + 1       # number of clips possible from selected segment of the video
@@ -318,7 +318,7 @@ def process_video(video_path, gt_path):
         save_path = os.path.join(gt_save_path, f'gt_HR_clip_{clip_idx}.txt')
         np.savetxt(save_path, clip_gt)
 
-    print(f"{video_path.split('VIPL-HR-V1/')[-1]}: ST maps and ground truth data saved for {num_clips} clips")
+    print(f"{video_path}: ST maps and ground truth data saved for {num_clips} clips")
     np.save(st_map_save_path, st_maps)
 
 def process_videos():
