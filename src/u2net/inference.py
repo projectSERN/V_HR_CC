@@ -3,8 +3,6 @@ import numpy as np
 import onnxruntime as ort
 from PIL import Image
 
-from config import config
-
 class U2Net:
     """
     U2-Net model (https://arxiv.org/pdf/2005.09007) inference for identifying exposed skin regions within the detected face.
@@ -15,7 +13,7 @@ class U2Net:
         input_shape (tuple): Shape of the input image.
     """
     def __init__(self, model_path):    
-        provider = ["CUDAExecutionProvider"] if config.DEVICE == 'cuda' else ["CPUExecutionProvider"]
+        provider = ["CUDAExecutionProvider"] if ort.get_device() == 'GPU' else ["CPUExecutionProvider"]
         sess_options = ort.SessionOptions()
         sess_options.log_severity_level = 3                                                 # to supress warnings       
         self.session = ort.InferenceSession(model_path, sess_options=sess_options, providers=provider)
