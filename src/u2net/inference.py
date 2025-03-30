@@ -12,8 +12,8 @@ class U2Net:
         input_name (str): Name of the input image.
         input_shape (tuple): Shape of the input image.
     """
-    def __init__(self, model_path):    
-        provider = ["CUDAExecutionProvider"] if ort.get_device() == 'GPU' else ["CPUExecutionProvider"]
+    def __init__(self, model_path, device):
+        provider = ["CUDAExecutionProvider"] if device == 'cuda' else ["CPUExecutionProvider"]
         sess_options = ort.SessionOptions()
         sess_options.log_severity_level = 3                                                 # to supress warnings       
         self.session = ort.InferenceSession(model_path, sess_options=sess_options, providers=provider)

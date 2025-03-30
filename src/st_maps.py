@@ -227,7 +227,7 @@ def process_video(video_path, gt_path):
         model_points_file=os.path.join(src_path, "rtgene/model_nets/face_model_68.txt")
     )
 
-    skin_seg_model = U2Net(model_path=os.path.join(src_path, "u2net", config.SKIN_SEG_MODEL))
+    skin_seg_model = U2Net(model_path=os.path.join(src_path, "u2net", config.SKIN_SEG_MODEL), device=config.DEVICE)
 
     # define paths to save ST maps and ground truth data, using same folder structure as dataset folder
     relative_path = os.path.relpath(video_path, config.SOURCE_PATH)
