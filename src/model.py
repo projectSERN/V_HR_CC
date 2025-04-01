@@ -59,6 +59,7 @@ class RhythmNet(nn.Module):
 
             # get CNN's frame-wise HR predictions
             x = self.regression(x)                                          # shape: (B, 1)
+            frame_rate = frame_rate.view(-1, 1)                             # shape: (B, 1)
             x = x * frame_rate                                              # element-wise multiplication to norm. by frame rate
             cnn_frame_preds.append(x.squeeze(-1))
 
